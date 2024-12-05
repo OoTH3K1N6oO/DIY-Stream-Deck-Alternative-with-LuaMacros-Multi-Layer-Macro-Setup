@@ -18,79 +18,138 @@ If you're interested, feel free to try it out and let me know your thoughts! I'm
 
 Here's the list of common macros you can add, with examples of how to implement them. These macros cover actions like sending keys, launching applications, system management, and copy-paste operations.
 
-Macros for Sending Keys
-Sending Key Combinations:
+### 1. **Open Programs**
+   - **Open a program by path**:
+     ```lua
+     lmc_spawn("C:\\path\\to\\your\\program.exe")
+     ```
+   - **Open a program with parameters**:
+     ```lua
+     lmc_spawn("C:\\path\\to\\program.exe --parameter")
+     ```
 
-layers[1][49] = function() lmc_send_keys('^c') end  -- Ctrl + C (Copy)
-layers[1][50] = function() lmc_send_keys('^v') end  -- Ctrl + V (Paste)
-layers[1][51] = function() lmc_send_keys('^x') end  -- Ctrl + X (Cut)
-layers[1][52] = function() lmc_send_keys('^z') end  -- Ctrl + Z (Undo)
-layers[1][53] = function() lmc_send_keys('^y') end  -- Ctrl + Y (Redo)
-layers[1][27] = function() lmc_send_keys('esc') end  -- ESC
-layers[1][13] = function() lmc_send_keys('enter') end  -- Enter
-Key Combinations for Applications:
+### 2. **Send Keystrokes**
+   - **Send a single key press**:
+     ```lua
+     lmc_send_keys('A')  -- Presses the "A" key
+     ```
+   - **Send a combination of keys**:
+     ```lua
+     lmc_send_keys('^c')  -- Sends Ctrl + C (Copy)
+     lmc_send_keys('^v')  -- Sends Ctrl + V (Paste)
+     lmc_send_keys('^z')  -- Sends Ctrl + Z (Undo)
+     ```
 
-Open Browser:
-layers[1][81] = function() os.execute('start chrome') end  -- Q: Open Chrome
-Volume Control (Windows):
-layers[1][65] = function() lmc_send_keys('^+v') end  -- A: Volume up (Ctrl + Shift + V)
-layers[1][83] = function() lmc_send_keys('^+b') end  -- S: Volume down (Ctrl + Shift + B)
-Macros for Launching Programs
-Launch a Specific Application:
+### 3. **Control System Functions**
+   - **Minimize all windows**:
+     ```lua
+     lmc_send_keys('^d')  -- Sends Ctrl + D (Minimize all)
+     ```
+   - **Lock the computer**:
+     ```lua
+     lmc_send_keys('^l')  -- Sends Ctrl + L (Lock screen)
+     ```
 
-layers[2][49] = function() lmc_spawn("C:\\Path\\To\\App.exe") end  -- 1: Launch a custom app
-layers[2][50] = function() lmc_spawn("C:\\Program Files\\Notepad++\\notepad++.exe") end  -- 2: Launch Notepad++
-Open a Folder:
+### 4. **Browser Control**
+   - **Open a URL in the default browser**:
+     ```lua
+     lmc_spawn("start https://www.example.com")
+     ```
+   - **Navigate backward in a browser**:
+     ```lua
+     lmc_send_keys('^[')  -- Sends Ctrl + [ (Browser back)
+     ```
 
-layers[2][51] = function() os.execute('start C:\\Users\\username\\Documents\\') end  -- 3: Open a specific folder
-Macros for System Management
-Shutdown or Restart the Computer:
+### 5. **Media Control**
+   - **Play/Pause media**:
+     ```lua
+     lmc_send_keys('^p')  -- Sends Ctrl + P (Play/Pause)
+     ```
+   - **Next/Previous media track**:
+     ```lua
+     lmc_send_keys('^n')  -- Sends Ctrl + N (Next track)
+     lmc_send_keys('^b')  -- Sends Ctrl + B (Previous track)
+     ```
 
-layers[3][49] = function() os.execute('shutdown -s -f -t 0') end  -- 1: Immediate shutdown
-layers[3][50] = function() os.execute('shutdown -r -f -t 0') end  -- 2: Immediate restart
-Lock the Computer:
+### 6. **Virtual Desktop Control (Windows)**
+   - **Switch between virtual desktops**:
+     ```lua
+     lmc_send_keys('^#left')  -- Switches to the previous virtual desktop
+     lmc_send_keys('^#right') -- Switches to the next virtual desktop
+     ```
 
-layers[3][51] = function() os.execute('rundll32.exe user32.dll,LockWorkStation') end  -- 3: Lock the computer
-Macros for Productivity Applications
-Manage Application Windows:
-Minimize Active Window:
-layers[1][57] = function() lmc_send_keys('^w') end  -- 9: Ctrl + W (Close window)
-Maximize Active Window:
-layers[1][58] = function() lmc_send_keys('^+up') end  -- 0: Ctrl + Shift + Up arrow (Maximize window)
-Macros for Discord or Communication Apps
-Mute/Unmute Microphone in Discord:
+### 7. **Clipboard Management**
+   - **Clear clipboard**:
+     ```lua
+     os.execute("echo off | clip")  -- Clears the clipboard
+     ```
+   - **Copy specific text to clipboard**:
+     ```lua
+     os.execute('echo "Text to copy" | clip')  -- Copies "Text to copy" to clipboard
+     ```
 
-layers[2][49] = function() lmc_send_keys('^+m') end  -- 1: Mute/Unmute microphone in Discord (Ctrl + Shift + M)
-layers[2][50] = function() lmc_send_keys('^+d') end  -- 2: Enable/Disable Discord overlay (Ctrl + Shift + D)
-Launch Discord Directly:
+### 8. **System Volume Control**
+   - **Increase system volume**:
+     ```lua
+     lmc_send_keys('^up')  -- Increases volume (using the volume hotkeys)
+     ```
+   - **Decrease system volume**:
+     ```lua
+     lmc_send_keys('^down')  -- Decreases volume (using the volume hotkeys)
+     ```
 
-layers[2][51] = function() lmc_spawn("C:\\Users\\user\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe") end  -- 3: Launch Discord
-Macros for File Management
-Copy, Move, or Delete Files:
-Copy a File:
-layers[1][57] = function() os.execute('copy C:\\path\\to\\file.txt D:\\path\\to\\destination\\') end  -- 9: Copy a file
-Delete a File:
-layers[1][58] = function() os.execute('del C:\\path\\to\\file.txt') end  -- 0: Delete a file
-Macros for Game or Application Automation
-Game Scripts:
-Simulate Mouse Clicks (if supported by the library):
-layers[2][65] = function() lmc_mouse_click(1) end  -- A: Left mouse click
-layers[2][83] = function() lmc_mouse_click(2) end  -- S: Right mouse click
-Macros for Web Navigation
-Switch Browser Tabs:
-Go to the Next Tab:
-layers[1][60] = function() lmc_send_keys('^+{TAB}') end  -- F1: Go to the next tab
-Go to the Previous Tab:
-layers[1][61] = function() lmc_send_keys('^+{SHIFT}{TAB}') end  -- F2: Go to the previous tab
-Macros for Clipboard Management
-Copy to Clipboard:
+### 9. **Clipboard Text Operations**
+   - **Replace clipboard text**:
+     ```lua
+     local clipboardText = lmc_clipboard()
+     clipboardText = string.gsub(clipboardText, "old", "new")  -- Replace "old" with "new"
+     lmc_set_clipboard(clipboardText)
+     ```
 
-layers[1][67] = function() lmc_send_keys('^c') end  -- C: Copy to clipboard
-Clear Clipboard (if needed):
+### 10. **Control Mouse**
+   - **Move the mouse to specific coordinates**:
+     ```lua
+     lmc_move_mouse(x, y)  -- Move mouse to coordinates (x, y)
+     ```
+   - **Click at a specific location**:
+     ```lua
+     lmc_mouse_click(x, y)  -- Click the mouse at coordinates (x, y)
+     ```
 
-Clear the Clipboard:
-layers[3][67] = function() os.execute('echo off | clip') end  -- C: Clear clipboard
-Macros for Streaming Applications
-Launch a Streaming App (e.g., OBS Studio):
-layers[3][49] = function() lmc_spawn("C:\\Program Files\\obs-studio\\bin\\64bit\\obs64.exe") end  -- 1: Launch OBS Studio
-These are just some examples of the macros you can add. Of course, you can combine these commands to create more complex macros depending on your needs.
+### 11. **System Sleep**
+   - **Sleep for a specified time**:
+     ```lua
+     lmc_sleep(1000)  -- Sleep for 1000 milliseconds (1 second)
+     ```
+
+### 12. **Automate Text Entry**
+   - **Type a series of characters with a delay**:
+     ```lua
+     lmc_send_keys("Hello World")  -- Types "Hello World"
+     ```
+
+### 13. **Control Wi-Fi**
+   - **Turn Wi-Fi on/off (using netsh command)**:
+     ```lua
+     os.execute("netsh interface set interface 'Wi-Fi' admin=disable")  -- Disable Wi-Fi
+     os.execute("netsh interface set interface 'Wi-Fi' admin=enable")   -- Enable Wi-Fi
+     ```
+
+### 14. **Control Bluetooth**
+   - **Turn Bluetooth on/off (using devmgmt.msc or PowerShell)**:
+     ```lua
+     os.execute("powershell -Command \"Enable-Bluetooth\"")  -- Enable Bluetooth
+     os.execute("powershell -Command \"Disable-Bluetooth\"") -- Disable Bluetooth
+     ```
+
+### 15. **Opening Websites**
+   - **Open a specific website**:
+     ```lua
+     lmc_spawn("start https://www.google.com")  -- Opens Google
+     ```
+
+### 16. **Running Custom Scripts**
+   - **Run a custom script**:
+     ```lua
+     lmc_spawn("C:\\path\\to\\your\\script.bat")  -- Executes a custom script
+     ```
