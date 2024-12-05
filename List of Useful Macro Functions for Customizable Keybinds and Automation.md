@@ -1,3 +1,4 @@
+#List of Useful Macro Functions for Customizable Keybinds and Automation
 Here's the list of common macros you can add, with examples of how to implement them. These macros cover actions like sending keys, launching applications, system management, and copy-paste operations.
 
 Macros for Sending Keys
